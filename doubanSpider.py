@@ -28,7 +28,7 @@ def book_spider(book_tag):
     while(1):
         #url='http://www.douban.com/tag/%E5%B0%8F%E8%AF%B4/book?start=0' # For Test
         url='http://www.douban.com/tag/'+urllib.quote(book_tag)+'/book?start='+str(page_num*15)
-        time.sleep(np.random.rand()*5)
+        # time.sleep(np.random.rand()*5)
         
         #Last Version
         try:
@@ -70,14 +70,15 @@ def book_spider(book_tag):
                 rating = book_info.find('span', {'class':'rating_nums'}).string.strip()
             except:
                 rating='0.0'
-            try:
-                #people_num = book_info.findAll('span')[2].string.strip()
-                people_num = get_people_num(book_url)
-                people_num = people_num.strip('人评价')
-            except:
-                people_num ='0'
+            # try:
+            #     #people_num = book_info.findAll('span')[2].string.strip()
+            #     people_num = get_people_num(book_url)
+            #     people_num = people_num.strip('人评价')
+            # except:
+            #     people_num ='0'
             
-            book_list.append([title,rating,people_num,author_info,pub_info])
+            # book_list.append([title,rating,people_num,author_info,pub_info])
+            book_list.append([title, rating, 0, author_info, pub_info])
             try_times=0 #set 0 when got valid information
         page_num+=1
         print 'Downloading Information From Page %d' % page_num
@@ -107,7 +108,7 @@ def do_spider(book_tag_lists):
 
 
 def print_book_lists_excel(book_lists,book_tag_lists):
-    wb=Workbook(optimized_write=True)
+    wb=Workbook()
     ws=[]
     for i in range(len(book_tag_lists)):
         ws.append(wb.create_sheet(title=book_tag_lists[i].decode())) #utf8->unicode
@@ -137,7 +138,8 @@ if __name__=='__main__':
     #book_tag_lists = ['名著']
     #book_tag_lists = ['科普','经典','生活','心灵','文学']
     #book_tag_lists = ['科幻','思维','金融']
-    book_tag_lists = ['个人管理','时间管理','投资','文化','宗教']
+    # book_tag_lists = ['个人管理','时间管理','投资','文化','宗教']
+    book_tag_lists = ['个人管理','时间管理']
     book_lists=do_spider(book_tag_lists)
     print_book_lists_excel(book_lists,book_tag_lists)
     
